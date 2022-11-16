@@ -22,7 +22,13 @@ const taskSchema  = new mongoose.Schema({
 const Task = mongoose.model('Task', taskSchema);
 
 app.get('/tasks', (req,res) => {
-    Task.find({}, (err,tasks) => {
+    let doneQuery;
+    if (req.query.isDone) {
+        doneQuery = {isDone: req.query.isDone};
+    } else {
+        doneQuery = {}
+    }
+    Task.find(doneQuery, (err,tasks) => {
         if (err) {
             console.error(err)
         } else {
